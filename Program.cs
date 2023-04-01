@@ -4,12 +4,15 @@
     {
         static void Main(string[] args)
         {
-            //Console.WriteLine("Hello, World!");
+           
             Pueblo pueblo = new Pueblo();
             Gobierno gobierno = new Gobierno();
             int numProtestas = 0;
             int numCambiosPolitica = 0;
             int numCambiosGobierno = 0;
+
+            int numCambiosPoliticaTotal = 0;
+            int numCambiosGobiernoTotal = 0;
 
             Console.WriteLine("Presione 'D' para detener la simulación.");
             Console.WriteLine("Comportamiento actual del pueblo: " + pueblo.EstadoMalestar);
@@ -28,34 +31,30 @@
                 if (pueblo.EstadoMalestar == Pueblo.NivelMalestar.Baja)
                 {
                     Console.WriteLine("El pueblo está tranquilo.");
+
                 }
                 else
                 {
-                    Console.WriteLine("El pueblo está descontento y puede haber protestas.");
-                    numProtestas++;
+                    if (pueblo.EstadoMalestar == Pueblo.NivelMalestar.Alta)
+                    {
+                        Console.WriteLine("El pueblo está descontento y puede haber protestas.");
+                        numProtestas++;
+                        Console.WriteLine("Habran cambios.");   
+                    }
+                    
                 }
 
                 // Simulación del comportamiento del gobierno
-                if (gobierno.PoliticaGubernamental == Gobierno.Politica.Permisiva)
-                {
-                    Console.WriteLine("El gobierno está siendo permisivo.");
-                }
-                else
-                {
-                    Console.WriteLine("El gobierno está siendo coercitivo y puede haber cambios.");
-                    if (pueblo.EstadoMalestar == Pueblo.NivelMalestar.Alta)
-                    {
-                        gobierno.PartidoPolitico = (gobierno.PartidoPolitico == Gobierno.Partido.Conservador) ?
+
+                gobierno.PartidoPolitico = (gobierno.PartidoPolitico == Gobierno.Partido.Conservador) ?
                             Gobierno.Partido.Liberal : Gobierno.Partido.Conservador;
-                        numCambiosGobierno++;
-                    }
-                    else
-                    {
-                        gobierno.PoliticaGubernamental = (gobierno.PoliticaGubernamental == Gobierno.Politica.Coercitiva) ?
-                            Gobierno.Politica.Permisiva : Gobierno.Politica.Coercitiva;
-                        numCambiosPolitica++;
-                    }
-                }
+                numCambiosGobierno++;
+                numCambiosGobiernoTotal++;
+
+                gobierno.PoliticaGubernamental = (gobierno.PoliticaGubernamental == Gobierno.Politica.Coercitiva) ?
+                    Gobierno.Politica.Permisiva : Gobierno.Politica.Coercitiva;
+                numCambiosPolitica++;
+                numCambiosPoliticaTotal++;
 
                 // Actualización del estado de ánimo del pueblo
                 Random rnd = new Random();
